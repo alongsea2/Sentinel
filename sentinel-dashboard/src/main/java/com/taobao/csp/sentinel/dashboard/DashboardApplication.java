@@ -17,6 +17,7 @@ package com.taobao.csp.sentinel.dashboard;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ImportResource;
 
 /**
  * Sentinel dashboard application.
@@ -24,8 +25,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @author Carpenter Lee
  */
 @SpringBootApplication
+@ImportResource(locations = {"classpath:app-spring-disconf.xml"})
 public class DashboardApplication {
-
     public static void main(String[] args) {
         SpringApplication.run(DashboardApplication.class, args);
     }

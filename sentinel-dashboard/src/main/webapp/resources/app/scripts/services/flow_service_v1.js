@@ -8,7 +8,7 @@ app.service('FlowServiceV1', ['$http', function ($http) {
       port: port
     };
     return $http({
-      url: '/v1/flow/rules',
+      url: '/v2/flow/rules',
       params: param,
       method: 'GET'
     });

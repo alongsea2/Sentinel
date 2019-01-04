@@ -25,3 +25,4 @@ bin/
 # System related
 *.DS_Store
 Thumbs.db
+disconf/
