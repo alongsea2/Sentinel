@@ -25,6 +25,7 @@ import com.alibaba.csp.sentinel.log.LogBase;
 import com.alibaba.csp.sentinel.log.RecordLog;
 import com.alibaba.csp.sentinel.util.AppNameUtil;
 import com.alibaba.csp.sentinel.util.AssertUtil;
+import com.alibaba.csp.sentinel.util.StringUtil;
 
 /**
  * The universal config of Courier. The config is retrieved from
@@ -41,6 +42,9 @@ public class SentinelConfig {
     public static final String TOTAL_METRIC_FILE_COUNT = "csp.sentinel.metric.file.total.count";
     public static final String COLD_FACTOR = "csp.sentinel.flow.cold.factor";
     public static final String STATISTIC_MAX_RT = "csp.sentinel.statistic.max.rt";
+    public static final String APP_NAME = "csp.sentinel.app.name";
+    public static final String PROPERTIES_FILE = "sentinel.properties";
+
 
     static final String DEFAULT_CHARSET = "UTF-8";
     static final long DEFAULT_SINGLE_METRIC_FILE_SIZE = 1024 * 1024 * 50;
@@ -64,14 +68,15 @@ public class SentinelConfig {
 
     private static void loadProps() {
         // Resolve app name.
-        AppNameUtil.resolveAppName();
         try {
-            String appName = AppNameUtil.getAppName();
-            if (appName == null) {
-                appName = "";
-            }
+            String appName = "";
             // We first retrieve the properties from the property file.
-            String fileName = LogBase.getLogBaseDir() + appName + ".properties";
+            String fileName;
+            fileName = SentinelConfig.class.getClassLoader().getResource("").getPath() + PROPERTIES_FILE;
+            if(StringUtil.isBlank(fileName)){
+                fileName = LogBase.getLogBaseDir() + appName + ".properties";
+            }
+
             File file = new File(fileName);
             if (file.exists()) {
                 RecordLog.info("[SentinelConfig] Reading config from " + fileName);
@@ -98,6 +103,8 @@ public class SentinelConfig {
                 RecordLog.info("[SentinelConfig] JVM parameter overrides {0}: {1} -> {2}", configKey, configValueOld, configValue);
             }
         }
+
+        AppNameUtil.setAppName(getConfig(APP_NAME));
     }
 
     /**
@@ -132,7 +139,7 @@ public class SentinelConfig {
     }
 
     public static String getAppName() {
-        return AppNameUtil.getAppName();
+        return SentinelConfig.getConfig(APP_NAME);
     }
 
     public static String charset() {
