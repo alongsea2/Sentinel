@@ -63,9 +63,9 @@ public class DemoClusterInitFuncV2 implements InitFunc {
                 flowDataId, source -> JSON.parseObject(source, new TypeReference<List<FlowRule>>() {}));
         FlowRuleManager.register2Property(ruleSource.getProperty());
 
-        ReadableDataSource<String, List<ParamFlowRule>> paramRuleSource = new NacosDataSource<>(remoteAddress, groupId,
+        /*ReadableDataSource<String, List<ParamFlowRule>> paramRuleSource = new NacosDataSource<>(remoteAddress, groupId,
                 paramDataId, source -> JSON.parseObject(source, new TypeReference<List<ParamFlowRule>>() {}));
-        ParamFlowRuleManager.register2Property(paramRuleSource.getProperty());
+        ParamFlowRuleManager.register2Property(paramRuleSource.getProperty());*/
     }
 
     /*private void initClientConfigProperty() {
