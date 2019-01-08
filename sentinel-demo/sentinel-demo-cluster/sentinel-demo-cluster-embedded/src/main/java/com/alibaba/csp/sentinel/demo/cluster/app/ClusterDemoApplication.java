@@ -15,16 +15,20 @@
  */
 package com.alibaba.csp.sentinel.demo.cluster.app;
 
+import com.alibaba.csp.sentinel.cluster.ClusterStateManager;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ImportResource;
 
 /**
  * @author Eric Zhao
  */
 @SpringBootApplication
+@ImportResource(locations = {"classpath:app-spring-disconf.xml"})
 public class ClusterDemoApplication {
 
     public static void main(String[] args) {
+        ClusterStateManager.setToClient();
         SpringApplication.run(ClusterDemoApplication.class, args);
     }
 }

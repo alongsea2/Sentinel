@@ -27,7 +27,7 @@ import com.alibaba.csp.sentinel.cluster.flow.rule.ClusterParamFlowRuleManager;
 import com.alibaba.csp.sentinel.cluster.server.config.ClusterServerConfigManager;
 import com.alibaba.csp.sentinel.cluster.server.config.ServerTransportConfig;
 import com.alibaba.csp.sentinel.datasource.ReadableDataSource;
-import com.alibaba.csp.sentinel.datasource.nacos.NacosDataSource;
+import com.alibaba.csp.sentinel.datasource.zookeeper.ZookeeperDataSource;
 import com.alibaba.csp.sentinel.demo.cluster.DemoConstants;
 import com.alibaba.csp.sentinel.demo.cluster.entity.ClusterGroupEntity;
 import com.alibaba.csp.sentinel.init.InitFunc;
@@ -40,6 +40,7 @@ import com.alibaba.csp.sentinel.util.AppNameUtil;
 import com.alibaba.csp.sentinel.util.HostNameUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
+import org.springframework.beans.factory.annotation.Value;
 
 /**
  * @author Eric Zhao
@@ -48,7 +49,8 @@ public class DemoClusterInitFunc implements InitFunc {
 
     private static final String APP_NAME = AppNameUtil.getAppName();
 
-    private final String remoteAddress = "localhost";
+    @Value(value = "${zk.server}")
+    private String remoteAddress = "172.16.249.115:2181";
     private final String groupId = "SENTINEL_GROUP";
 
     private final String flowDataId = APP_NAME + DemoConstants.FLOW_POSTFIX;
@@ -73,23 +75,23 @@ public class DemoClusterInitFunc implements InitFunc {
     }
 
     private void initDynamicRuleProperty() {
-        ReadableDataSource<String, List<FlowRule>> ruleSource = new NacosDataSource<>(remoteAddress, groupId,
+        ReadableDataSource<String, List<FlowRule>> ruleSource = new ZookeeperDataSource<>(remoteAddress, groupId,
             flowDataId, source -> JSON.parseObject(source, new TypeReference<List<FlowRule>>() {}));
         FlowRuleManager.register2Property(ruleSource.getProperty());
 
-        ReadableDataSource<String, List<ParamFlowRule>> paramRuleSource = new NacosDataSource<>(remoteAddress, groupId,
+        ReadableDataSource<String, List<ParamFlowRule>> paramRuleSource = new ZookeeperDataSource<>(remoteAddress, groupId,
             paramDataId, source -> JSON.parseObject(source, new TypeReference<List<ParamFlowRule>>() {}));
         ParamFlowRuleManager.register2Property(paramRuleSource.getProperty());
     }
 
     private void initClientConfigProperty() {
-        ReadableDataSource<String, ClusterClientConfig> clientConfigDs = new NacosDataSource<>(remoteAddress, groupId,
+        ReadableDataSource<String, ClusterClientConfig> clientConfigDs = new ZookeeperDataSource<>(remoteAddress, groupId,
             configDataId, source -> JSON.parseObject(source, new TypeReference<ClusterClientConfig>() {}));
         ClusterClientConfigManager.registerClientConfigProperty(clientConfigDs.getProperty());
     }
 
     private void initServerTransportConfigProperty() {
-        ReadableDataSource<String, ServerTransportConfig> serverTransportDs = new NacosDataSource<>(remoteAddress, groupId,
+        ReadableDataSource<String, ServerTransportConfig> serverTransportDs = new ZookeeperDataSource<>(remoteAddress, groupId,
             clusterMapDataId, source -> {
             List<ClusterGroupEntity> groupList = JSON.parseObject(source, new TypeReference<List<ClusterGroupEntity>>() {});
             return Optional.ofNullable(groupList)
@@ -102,13 +104,13 @@ public class DemoClusterInitFunc implements InitFunc {
     private void registerClusterRuleSupplier() {
         // Register cluster flow rule property supplier which creates data source by namespace.
         ClusterFlowRuleManager.setPropertySupplier(namespace -> {
-            ReadableDataSource<String, List<FlowRule>> ds = new NacosDataSource<>(remoteAddress, groupId,
+            ReadableDataSource<String, List<FlowRule>> ds = new ZookeeperDataSource<>(remoteAddress, groupId,
                 flowDataId, source -> JSON.parseObject(source, new TypeReference<List<FlowRule>>() {}));
             return ds.getProperty();
         });
         // Register cluster parameter flow rule property supplier which creates data source by namespace.
         ClusterParamFlowRuleManager.setPropertySupplier(namespace -> {
-            ReadableDataSource<String, List<ParamFlowRule>> ds = new NacosDataSource<>(remoteAddress, groupId,
+            ReadableDataSource<String, List<ParamFlowRule>> ds = new ZookeeperDataSource<>(remoteAddress, groupId,
                 paramDataId, source -> JSON.parseObject(source, new TypeReference<List<ParamFlowRule>>() {}));
             return ds.getProperty();
         });
@@ -118,7 +120,7 @@ public class DemoClusterInitFunc implements InitFunc {
         // Cluster map format:
         // [{"clientSet":["112.12.88.66@8729","112.12.88.67@8727"],"ip":"112.12.88.68","machineId":"112.12.88.68@8728","port":11111}]
         // machineId: <ip@commandPort>, commandPort for port exposed to Sentinel dashboard (transport module)
-        ReadableDataSource<String, ClusterClientAssignConfig> clientAssignDs = new NacosDataSource<>(remoteAddress, groupId,
+        ReadableDataSource<String, ClusterClientAssignConfig> clientAssignDs = new ZookeeperDataSource<>(remoteAddress, groupId,
             clusterMapDataId, source -> {
             List<ClusterGroupEntity> groupList = JSON.parseObject(source, new TypeReference<List<ClusterGroupEntity>>() {});
             return Optional.ofNullable(groupList)
@@ -132,7 +134,7 @@ public class DemoClusterInitFunc implements InitFunc {
         // Cluster map format:
         // [{"clientSet":["112.12.88.66@8729","112.12.88.67@8727"],"ip":"112.12.88.68","machineId":"112.12.88.68@8728","port":11111}]
         // machineId: <ip@commandPort>, commandPort for port exposed to Sentinel dashboard (transport module)
-        ReadableDataSource<String, Integer> clusterModeDs = new NacosDataSource<>(remoteAddress, groupId,
+        ReadableDataSource<String, Integer> clusterModeDs = new ZookeeperDataSource<>(remoteAddress, groupId,
             clusterMapDataId, source -> {
             List<ClusterGroupEntity> groupList = JSON.parseObject(source, new TypeReference<List<ClusterGroupEntity>>() {});
             return Optional.ofNullable(groupList)
