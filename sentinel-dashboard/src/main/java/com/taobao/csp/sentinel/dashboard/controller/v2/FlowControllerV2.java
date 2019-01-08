@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.taobao.csp.sentinel.dashboard.view;
+package com.taobao.csp.sentinel.dashboard.controller.v2;
 
 import java.util.Date;
 import java.util.List;
@@ -24,6 +24,7 @@ import com.taobao.csp.sentinel.dashboard.datasource.entity.rule.FlowRuleEntity;
 import com.taobao.csp.sentinel.dashboard.repository.rule.InMemoryRuleRepositoryAdapter;
 import com.taobao.csp.sentinel.dashboard.rule.DynamicRuleProvider;
 import com.taobao.csp.sentinel.dashboard.rule.DynamicRulePublisher;
+import com.taobao.csp.sentinel.dashboard.domain.Result;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
