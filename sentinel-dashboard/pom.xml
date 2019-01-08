@@ -31,7 +31,7 @@
         </dependency>
         <dependency>
             <groupId>com.alibaba.csp</groupId>
-            <artifactId>sentinel-transport-simple-http</artifactId>
+            <artifactId>sentinel-transport-netty-http</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
@@ -110,7 +110,58 @@
             <artifactId>mockito-core</artifactId>
             <scope>test</scope>
         </dependency>
+
+
+        <!--self design-->
+        <dependency>
+            <groupId>com.baidu.disconf</groupId>
+            <artifactId>disconf-client</artifactId>
+            <version>2.6.37</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.google.code.gson</groupId>
+                    <artifactId>gson</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.8.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.alibaba.csp</groupId>
+            <artifactId>sentinel-datasource-zookeeper</artifactId>
+        </dependency>
+
+
     </dependencies>
+
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <properties>
+                <project.env>dev</project.env>
+            </properties>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+        <profile>
+            <id>test</id>
+            <properties>
+                <project.env>test</project.env>
+            </properties>
+        </profile>
+        <profile>
+            <id>pro</id>
+            <properties>
+                <project.env>pro</project.env>
+            </properties>
+        </profile>
+    </profiles>
 
     <build>
         <finalName>sentinel-dashboard</finalName>
@@ -152,7 +203,21 @@
 
         <resources>
             <resource>
-                <directory>src/main/resources</directory>
+                <directory>src/main/resources/</directory>
+                <filtering>true</filtering>
+                <excludes>
+                    <exclude>dev/*</exclude>
+                </excludes>
+            </resource>
+
+            <resource>
+                <directory>src/main/resources/${project.env}</directory>
+                <includes>
+                    <include>*.*</include>
+                    <include>**/*.xml</include>
+                    <include>**/*.properties</include>
+                </includes>
+                <filtering>true</filtering>
             </resource>
 
             <resource>
