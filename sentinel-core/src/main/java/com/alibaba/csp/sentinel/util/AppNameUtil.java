@@ -56,7 +56,7 @@ public final class AppNameUtil {
     }
 
     static {
-        resolveAppName();
+        //resolveAppName();
         RecordLog.info("App name resolved: " + appName);
     }
 
@@ -69,7 +69,7 @@ public final class AppNameUtil {
         }
 
         // parse sun.java.command property
-        String command = System.getProperty(SUN_JAVA_COMMAND);
+        /*String command = System.getProperty(SUN_JAVA_COMMAND);
         if (isEmpty(command)) {
             return;
         }
@@ -87,7 +87,7 @@ public final class AppNameUtil {
         if (command.endsWith(JAR_SUFFIX_LOWER) || command.endsWith(JAR_SUFFIX_UPPER)) {
             command = command.substring(0, command.length() - 4);
         }
-        appName = command;
+        appName = command;*/
     }
 
     public static String getAppName() {

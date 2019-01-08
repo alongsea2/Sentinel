@@ -25,6 +25,7 @@ import com.alibaba.csp.sentinel.log.LogBase;
 import com.alibaba.csp.sentinel.log.RecordLog;
 import com.alibaba.csp.sentinel.util.AppNameUtil;
 import com.alibaba.csp.sentinel.util.AssertUtil;
+import com.alibaba.csp.sentinel.util.StringUtil;
 
 /**
  * The universal config of Courier. The config is retrieved from
@@ -70,8 +71,14 @@ public class SentinelConfig {
             if (appName == null) {
                 appName = "";
             }
+            //1.4.1.1 add
+            String fileName = "";
+            fileName = SentinelConfig.class.getClassLoader().getResource("").getPath() + "disconf.properties";
+            //1.4.1
             // We first retrieve the properties from the property file.
-            String fileName = LogBase.getLogBaseDir() + appName + ".properties";
+            if(StringUtil.isBlank(fileName)){
+                fileName = LogBase.getLogBaseDir() + appName + ".properties";
+            }
             File file = new File(fileName);
             if (file.exists()) {
                 RecordLog.info("[SentinelConfig] Reading config from " + fileName);

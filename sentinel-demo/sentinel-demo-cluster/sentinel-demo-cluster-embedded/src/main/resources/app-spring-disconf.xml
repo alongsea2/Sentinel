@@ -7,7 +7,7 @@
 
     <bean id="disconfMgrBean" class="com.baidu.disconf.client.DisconfMgrBean"
           destroy-method="destroy">
-        <property name="scanPackage" value="com.taobao.csp.sentinel.dashboard.config"/>
+        <property name="scanPackage" value="com.alibaba.csp.sentinel.demo.cluster.app.config"/>
     </bean>
 
     <bean id="disconfMgrBean2" class="com.baidu.disconf.client.DisconfMgrBeanSecond"

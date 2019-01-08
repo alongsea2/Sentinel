@@ -17,6 +17,7 @@ package com.alibaba.csp.sentinel.demo.cluster.app.controller;
 
 import com.alibaba.csp.sentinel.demo.cluster.app.service.DemoService;
 
+import com.alibaba.csp.sentinel.init.InitExecutor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
