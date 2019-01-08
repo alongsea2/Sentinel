@@ -136,6 +136,12 @@
             <artifactId>sentinel-datasource-zookeeper</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>org.apache.zookeeper</groupId>
+            <artifactId>zookeeper</artifactId>
+            <version>3.4.13</version>
+        </dependency>
+
 
     </dependencies>
 
