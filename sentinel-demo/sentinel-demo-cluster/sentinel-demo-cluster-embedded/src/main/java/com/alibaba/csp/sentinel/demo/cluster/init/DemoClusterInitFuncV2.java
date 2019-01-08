@@ -8,6 +8,7 @@ import com.alibaba.csp.sentinel.cluster.flow.rule.ClusterFlowRuleManager;
 import com.alibaba.csp.sentinel.cluster.flow.rule.ClusterParamFlowRuleManager;
 import com.alibaba.csp.sentinel.cluster.server.config.ClusterServerConfigManager;
 import com.alibaba.csp.sentinel.cluster.server.config.ServerTransportConfig;
+import com.alibaba.csp.sentinel.config.SentinelConfig;
 import com.alibaba.csp.sentinel.datasource.ReadableDataSource;
 import com.alibaba.csp.sentinel.datasource.nacos.NacosDataSource;
 import com.alibaba.csp.sentinel.datasource.zookeeper.ZookeeperDataSource;
@@ -35,7 +36,7 @@ public class DemoClusterInitFuncV2 implements InitFunc {
 
     private String remoteAddress = "172.16.249.115:2181";
 
-    private String groupId = AppNameUtil.getAppName();
+    private String groupId = SentinelConfig.getAppName();
 
     private String flowDataId = "flow-rules";
 

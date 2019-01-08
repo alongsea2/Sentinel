@@ -42,6 +42,8 @@ public class SentinelConfig {
     public static final String TOTAL_METRIC_FILE_COUNT = "csp.sentinel.metric.file.total.count";
     public static final String COLD_FACTOR = "csp.sentinel.flow.cold.factor";
     public static final String STATISTIC_MAX_RT = "csp.sentinel.statistic.max.rt";
+    public static final String APP_NAME = "csp.sentinel.app.name";
+
 
     static final String DEFAULT_CHARSET = "UTF-8";
     static final long DEFAULT_SINGLE_METRIC_FILE_SIZE = 1024 * 1024 * 50;
@@ -71,9 +73,9 @@ public class SentinelConfig {
             if (appName == null) {
                 appName = "";
             }
-            //1.4.1.1 add
+            //1.4.1.1 add default read sentinel.properties else then jump to 1.4.1 logic
             String fileName = "";
-            fileName = SentinelConfig.class.getClassLoader().getResource("").getPath() + "disconf.properties";
+            fileName = SentinelConfig.class.getClassLoader().getResource("").getPath() + "sentinel.properties";
             //1.4.1
             // We first retrieve the properties from the property file.
             if(StringUtil.isBlank(fileName)){
@@ -139,7 +141,7 @@ public class SentinelConfig {
     }
 
     public static String getAppName() {
-        return AppNameUtil.getAppName();
+        return props.get(APP_NAME);
     }
 
     public static String charset() {
