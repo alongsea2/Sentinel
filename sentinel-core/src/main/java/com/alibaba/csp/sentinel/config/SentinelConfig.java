@@ -107,6 +107,7 @@ public class SentinelConfig {
                 RecordLog.info("[SentinelConfig] JVM parameter overrides {0}: {1} -> {2}", configKey, configValueOld, configValue);
             }
         }
+        AppNameUtil.setAppName(SentinelConfig.getAppName());
     }
 
     /**

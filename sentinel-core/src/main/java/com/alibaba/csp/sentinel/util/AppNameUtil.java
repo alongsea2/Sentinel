@@ -94,6 +94,10 @@ public final class AppNameUtil {
         return appName;
     }
 
+    public static void setAppName(String appName) {
+        AppNameUtil.appName = appName;
+    }
+
     private static boolean isEmpty(String str) {
         return str == null || "".equals(str);
     }
